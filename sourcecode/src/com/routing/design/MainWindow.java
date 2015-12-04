@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -717,9 +718,16 @@ public class MainWindow {
 	 * @param distance	New Distance or link weight between the two nodes.
 	 */
 	private void modifyLink(String from, String to, int distance) {
-		for (Edge edge : edges) {
+		Iterator<Edge> iterator = edges.iterator();
+		
+		while (iterator.hasNext()) {
+			Edge edge = iterator.next();
 			if ((edge.v1.equalsIgnoreCase(from) && edge.v2.equalsIgnoreCase(to)) || (edge.v1.equalsIgnoreCase(to) && edge.v2.equalsIgnoreCase(from))) {
-				edge.distance = distance;
+				if (distance <= 0) {
+					iterator.remove();
+				} else {
+					edge.distance = distance;
+				}
 			}
 		}
 		Graph.modifyLink(from, to, distance);
